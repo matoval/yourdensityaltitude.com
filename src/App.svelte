@@ -130,6 +130,7 @@
     height: 437px;
     width: 410px;
     margin: 0 auto;
+    z-index: 1;
   }
 
   .tenHands {
@@ -160,7 +161,7 @@
     margin: 0 auto;
     padding-left: 30px; 
     max-width: 500px;
-
+    padding-bottom: 50px;
   }
 
    @media only screen and (max-device-width: 400px) {
