@@ -13,6 +13,7 @@
     background-color: rgb(4, 13, 92);
     align-content: center;
     justify-content: center;
+    z-index: 10;
   }
 
   .title {

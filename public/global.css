@@ -13,3 +13,7 @@ body {
 	box-sizing: border-box;
   font-family: 'Kadwa', serif;
 }
+
+header {
+	z-index: 10;
+}
