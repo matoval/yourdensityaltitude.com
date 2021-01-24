@@ -8,6 +8,10 @@
   let DaCalcStart = 0;
   let DaCalc;
   let start;
+  let oneHand;
+  let tenHand;
+  let oneDegree;
+  let tenDegree;
 
   function altCountUp() {
     DaCalcStart = Math.round(DaCalc / 1.2);
@@ -18,6 +22,21 @@
         clearInterval(intervalCount);
       }
     }, 1);
+    if (DaCalc.toString().length === 3) {
+      tenDegree = 0
+    } else if (DaCalc.toString().length === 4) {
+      tenDegree = Math.abs(DaCalc / 1000).toFixed(2);
+      oneDegree = Math.abs(DaCalc / 100).toFixed(2);
+    } else if (DaCalc.toString().length === 5) {
+      tenDegree = Math.abs(DaCalc / 1000).toFixed(2);
+      oneDegree = Math.abs(DaCalc / 100).toFixed(2);
+    } 
+    oneHand = 180 + (parseInt(oneDegree) * 3.6);
+    tenHand = 180 + (parseInt(tenDegree) * 3.6);
+    console.log(tenHand);
+    console.log(oneHand);
+    document.documentElement.style.setProperty('--oneHand',  `${oneHand}deg`);
+    document.documentElement.style.setProperty('--tenHand', `${tenHand}deg`);
   }
 
   const getCoor = () => {
@@ -81,6 +100,11 @@
 </script>
 
 <style>
+  :root {
+    --oneHand: 180deg;
+    --tenHand: 180deg;
+  }
+
   header{
     margin: 0;
     padding: 0;
@@ -99,23 +123,37 @@
     text-align: center;
   }
 
-  .gauge-box {
+  .altimeter {
     display: flex;
+    justify-content: center;
+    position: relative;
+    height: 437px;
+    width: 410px;
     margin: 0 auto;
-    width: 260px;
-    border: 3px solid blue;
-    border-radius: 10px;
   }
 
-  .gauge {
-    height: 60px;
-    padding: 15px;
-    text-align: center;
-    background-color: blue;
+  .tenHands {
+    position: absolute;
+    top: 105px;
+    left: 174px;
+    z-index: 2;
+    transform: rotate(var(--tenHand));
+    transition: 7500ms linear all;
   }
+
+  .oneHands {
+    position: absolute;
+    top: 70px;
+    left: 174px;
+    z-index: 2;
+    transform: rotate(var(--oneHand));
+    transition: 7500ms linear all; 
+  }
+
   .DAfeet {
-    color: rgb(216, 213, 197);
+    color: rgb(0, 0, 0);
     font-size: 30px;
+    text-align: center;
   }
 
   .disclaimer {
@@ -124,6 +162,35 @@
     max-width: 500px;
 
   }
+
+   @media only screen and (max-device-width: 400px) {
+    .altimeter {
+      width: 300px;
+    }
+
+    .altimeter img {
+      width: 300px;
+      height: 350px;
+    }
+
+    .tenHands {
+      top: 65px;
+      left: 0px;
+    }
+
+    .tenHands img {
+      height: 170px;
+    }
+
+    .oneHands {
+      top: 70px;
+      left: 0px;
+    }
+    .oneHands img {
+      height: 170px;
+    }
+  }
+
 </style>
 
 <header>
@@ -134,15 +201,20 @@
   <div class="subtitle">
     <h2>Your Density Altitude</h2>
   </div>
-  <div class="gauge-box">
-    <div class="gauge" style="width: {(DaCalcStart / DaCalc) * 100}%;">
-    {#if DaCalc >= 1}
-      <div class="DAfeet">{DaCalcStart} Ft</div>
-    {:else}
-      <div class="DAfeet">Calculating...</div>
-      {/if}
+  <div class="altimeter">
+    <img src="altimeter.png" alt="altimeter">
+    <div class="tenHands">
+      <img src="ShortHand.svg" alt="Short hand">
+    </div>
+    <div class="oneHands">
+      <img src="LongHand.svg" alt="Long Hand">
     </div>
   </div>
+  {#if DaCalc >= 1}
+    <div class="DAfeet">{DaCalcStart} Ft</div>
+  {:else}
+    <div class="DAfeet">Calculating...</div>
+  {/if}
   <div class="disclaimer">
     <p>
       Density altitude is calulated using the following formula:<br>
